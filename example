@@ -1,0 +1,62 @@
+import Camera from 'react-native-camera';
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+  PermissionsAndroid,
+  TouchableOpacity
+} from 'react-native';
+
+export default class ScanBarcode extends Component {
+  static navigationOptions = ({navigation}) => ({
+  headerStyle: {backgroundColor: '#2565af'},
+  title: 'SCAN BARCODE',
+  headerTintColor: 'white',
+  });
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        qrcode: ''
+    }
+}
+
+onBarCodeRead = (e) => this.setState({qrcode: e.data});
+
+  render() {
+    return (
+      <View  style={styles.container}>
+                <Camera
+                    style={styles.preview}
+                    onBarCodeRead={this.onBarCodeRead}
+                    ref={cam => this.camera = cam}
+                    aspect={Camera.constants.Aspect.fill}>
+                        <Text> 
+                              Plaese place the camera on BARCODE
+                        </Text>
+                        <Text 
+                              onPress={this.getScanData.bind(this)}>
+                              {this.state.qrcode}
+                        </Text>
+                </Camera>
+      </View>
+    );
+  }
+
+  //store the VIN
+  getScanData(){
+    console.log("button pressed");
+    VIN = this.state.qrcode;
+    console.log(VIN);
+  }
+}
+
+const styles = StyleSheet.create({
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  }
+  });
